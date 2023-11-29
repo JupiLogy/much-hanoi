@@ -31,14 +31,6 @@ class Node:
         print('Peg2:', self.peg2)
         print('Peg3:', self.peg3) #print 'peg' array
 
-    def steps(self): 
-        #the minimum number of steps to solve the tower of hanoi is 2^n - 1
-        #where n is the number of disks
-        #calculate the minimum solution
-        disks = len(self.peg1)
-        steps = 2**disks - 1
-        return f"The minimum number of steps to solve this puzzle with {disks} disks is: {steps}"
-    
     def generate_moves(self):
      if self.children == []: #only generate moves once ie. if the children list is empty
       for peg, inital_peg in enumerate(self.puzzle):  # for each peg
@@ -55,93 +47,3 @@ class Node:
                         print(f"Safe move from {self.puzzle} to {new_puzzle} generated.") #generate safe state
                     else:
                         print(f"Unsafe move {self.puzzle} to {new_puzzle} marked as dead-end.") #mark unsafe states and do not explore them further
-
-
-class Search:
-    # class to perform searching
-
-    def puzzle_to_tuple(self, puzzle):
-        return tuple(tuple(peg) for peg in puzzle)
-        """'TypeError: unhashable type: 'list' was thrown because elements added
-        to a set must be hashable (immutable). Tuples are hashable, so this function returns
-        a tuple of tuples, which is hashable and can be added to the set"""
-
-    def path_trace(self, node):  # store the path from the root node to the goal node
-        current = node  # store input node as current
-        path = []  # initialize path list
-        path.append(current)  # add current to path
-        while current.parent != None:  # while the parent of the current node is not None
-            current = current.parent  # set current to the parent of the current node
-            path.append(current)  # add current to path
-        return path  # return the path to the goal state
-
-    def bfs(self, root):
-        open_list = []
-        visited = set()
-
-        open_list.append(root)
-        visited.add(self.puzzle_to_tuple(root.puzzle))
-
-    def a_star_search(self, root):
-        open_list = [] #similar to DFS implentation, initialize open list and visited set
-        visited = set()
-
-        open_list.append(root) #append root to open list
-        visited.add(self.puzzle_to_tuple(root.puzzle)) #add root to visited set
-        #the puzzle_to_tuple function is called again to avoid hashable error
-
-        while True: 
-            current_Node = open_list.pop(0) #pop element 0 from open list
-            print(f"Searching node: {current_Node.puzzle}")
-
-            if current_Node.goal_test() == True: #if we have reached the goal state
-                path_to_solution = self.path_trace(current_Node) #return the path to the goal state
-                return path_to_solution
-
-            current_Node.generate_moves() #generate valid states/moves from current state
-
-            for current_child in current_Node.children: #for each child state
-                child_puzzle_tuple = self.puzzle_to_tuple(current_child.puzzle) #convert to tuple
-                if child_puzzle_tuple not in visited: #if child state not in visited
-                    open_list.append(current_child) #add child to open list
-                    visited.add(child_puzzle_tuple) #add child to visited set
- 
-            open_list.sort(key=lambda x: x.f) #anonymous function to sort open list by f value of states
-
-
-#main function - creates UI for user to select which algorithm to use
-def main():
-    print('Initial State of puzzle:')
-    root.print_puzzle()
-    print("Which algorithm would you like to use to solve the Tower of Hanoi?")
-    print("2. A* Search")
-    print("3. Exit")
-    choice = input("Please enter 2 or 3: ")
-    if choice == "2":
-        print("Solving with A* Search")
-        search = Search()
-        solution_path = search.a_star_search(root)
-        # Display the action plan for DFS
-        solution_path.reverse()  # Reverse the path to display the solution
-        print("Path to solution:")
-        for i, node in enumerate(solution_path):
-            print(f"Step {i}")  # Print the step we are up to in the puzzle solution
-            node.print_puzzle()
-    elif choice == "3":
-        print("Exiting...")
-        exit()
-    else:
-        print("Invalid input, please enter 2 or 3")
-        main()
-
-
-# Initialize the puzzle, and display minimum number of steps to solve
-initial_state = [5, 4, 3, 2, 1], [], []
-root = Node(*initial_state)
-print(root.steps())
-# To attempt the puzzle with a different number of disks, change the initial state array
-
-# Call main function
-main()
-#note your IDE may not print the entire output, may need to adjust IDE settings to allow more output or run in terminal
-
