@@ -26,7 +26,7 @@ def main():
 
 # Initialize the puzzle, and display minimum number of steps to solve
 initial_state = [5, 4, 3, 2, 1], [], []
-root = Node(*initial_state)
+root = Node(initial_state)
 print(root.steps())
 
 # Call main function
