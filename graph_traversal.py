@@ -20,17 +20,17 @@ class Node:
         h = len(self.peg3) #number of disks on peg 3
         #heuristic value is the number of disks on peg 3
         return h + self.g #f = g + h
-        
-      
+
     def goal_test(self): #have we solved the puzzle?
         goal_state = [5, 4, 3, 2, 1] #define the goal state
         return self.peg3 == goal_state and not self.peg1 and not self.peg2
         #if peg3 is arranged in ascending order with all disks we have reached the goal state
+
     def print_puzzle(self): #display the state of the puzzle at each step
         print('Peg1:', self.peg1)
         print('Peg2:', self.peg2)
         print('Peg3:', self.peg3) #print 'peg' array
-    
+
     def steps(self): 
         #the minimum number of steps to solve the tower of hanoi is 2^n - 1
         #where n is the number of disks
@@ -57,34 +57,8 @@ class Node:
                         print(f"Unsafe move {self.puzzle} to {new_puzzle} marked as dead-end.") #mark unsafe states and do not explore them further
 
 
-
 class Search:
     # class to perform searching
-
-    def depth_first_search(self, root, depth_limit=31): #depth limit is 31 as the minimum solution is 2^n - 1
-        stack = []  # initialize stack
-        visited = set()  # initialize visited set
-        stack.append(root)  # append root to stack
-        visited.add(self.puzzle_to_tuple(root.puzzle))  # add root to stack
-
-        while stack:  # while the stack is not empty
-            current_Node = stack.pop(0)  # pop element 0
-            # Print each node just after it's popped from the stack
-            print(f"Searching node: {current_Node.puzzle}")
-
-            if current_Node.goal_test():  # when goal_test evaluates true
-                path_to_solution = self.path_trace(current_Node)  # call path_trace
-                return path_to_solution  # return path_to_solution
-
-            current_Node.generate_moves()
-            # call generate_moves to explore state_space
-            # generate legal moves from current state
-
-            for current_child in current_Node.children:  # for child states
-                child_puzzle_tuple = self.puzzle_to_tuple(current_child.puzzle)  # convert to tuple
-                if child_puzzle_tuple not in visited and current_child.g <= depth_limit:  # if child state not in visited and depth limit not reached
-                    stack.append(current_child)  # add child to stack
-                    visited.add(child_puzzle_tuple)  # add child to visited
 
     def puzzle_to_tuple(self, puzzle):
         return tuple(tuple(peg) for peg in puzzle)
@@ -100,6 +74,13 @@ class Search:
             current = current.parent  # set current to the parent of the current node
             path.append(current)  # add current to path
         return path  # return the path to the goal state
+
+    def bfs(self, root):
+        open_list = []
+        visited = set()
+
+        open_list.append(root)
+        visited.add(self.puzzle_to_tuple(root.puzzle))
 
     def a_star_search(self, root):
         open_list = [] #similar to DFS implentation, initialize open list and visited set
@@ -132,22 +113,11 @@ class Search:
 def main():
     print('Initial State of puzzle:')
     root.print_puzzle()
-    print("Which algorithm would you like to use ro solve the Tower of Hanoi?")
-    print("1. Depth First Search")
+    print("Which algorithm would you like to use to solve the Tower of Hanoi?")
     print("2. A* Search")
     print("3. Exit")
-    choice = input("Please enter 1, 2, or 3: ")
-    if choice == "1":
-        print("Solving with Depth First Search")
-        search = Search()
-        solution_path = search.depth_first_search(root)
-        # Display the action plan for DFS
-        solution_path.reverse()  # Reverse the path to display the solution
-        print("Path to solution:")
-        for i, node in enumerate(solution_path):
-            print(f"Step {i}")  # Print the step we are up to in the puzzle solution
-            node.print_puzzle()
-    elif choice == "2":
+    choice = input("Please enter 2 or 3: ")
+    if choice == "2":
         print("Solving with A* Search")
         search = Search()
         solution_path = search.a_star_search(root)
@@ -161,7 +131,7 @@ def main():
         print("Exiting...")
         exit()
     else:
-        print("Invalid input, please enter 1, 2, or 3")
+        print("Invalid input, please enter 2 or 3")
         main()
 
 
