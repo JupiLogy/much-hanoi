@@ -1,4 +1,4 @@
-from graph_traversal import goal_test
+from graph_traversal import goal_test, generate_moves
 
 def __puzzle_to_tuple__(puzzle):
     return tuple(tuple(peg) for peg in puzzle)
@@ -22,7 +22,7 @@ def bfs(root):
     open_list.append(root) #append root to open list
     visited[__puzzle_to_tuple__(root)] = None #add root to visited set, no parent
 
-    while True:
+    while len(open_list)>0:
         current_node = open_list.pop(0) #pop element 0 from open list
         print(f"Searching node: {current_node}")
 
