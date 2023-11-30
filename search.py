@@ -25,7 +25,7 @@ class Search:
 
         while True:
             current_node = open_list.pop(0) #pop element 0 from open list
-            print(f"Searching node: {current_node.puzzle}")
+            print(f"Searching node: {current_node.state}")
 
             if current_node.goal_test() == True: #if we have reached the goal state
                 path_to_solution = self.path_trace(current_node) #return the path to the goal state

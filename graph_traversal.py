@@ -11,18 +11,18 @@ class Node:
 
     def generate_moves(self):
         children = []
-        for peg_ind, inital_peg in enumerate(self.puzzle):  #for each peg
+        for peg_ind, inital_peg in enumerate(self.state):  #for each peg
             if len(inital_peg) != 0: #if the initial peg is not empty
                 disk = inital_peg[-1] #-1 index gives the top disk
-                for index, target_peg in enumerate(self.puzzle): #for each peg
+                for index, target_peg in enumerate(self.state): #for each peg
                     if peg_ind != index: #as long as the pegs are not the same
-                        new_puzzle = [peg_ind.copy() for peg in self.puzzle] #make a copy of the puzzle
+                        new_puzzle = [peg_ind.copy() for peg in self.state] #make a copy of the puzzle
                         new_puzzle[peg_ind].remove(disk)
                         new_puzzle[index].append(disk)
                         # in the new puzzle perform the move
                         if len(target_peg) == 0 or target_peg[-1] > disk:
                             children.append(new_puzzle)
-                            print(f"Safe move from {self.puzzle} to {new_puzzle} generated.") #generate safe state
+                            print(f"Safe move from {self.state} to {new_puzzle} generated.") #generate safe state
                         else:
-                            print(f"Unsafe move {self.puzzle} to {new_puzzle} marked as dead-end.") #mark unsafe states and do not explore them further
+                            print(f"Unsafe move {self.state} to {new_puzzle} marked as dead-end.") #mark unsafe states and do not explore them further
         return children
