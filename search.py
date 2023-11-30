@@ -6,13 +6,13 @@ def __puzzle_to_tuple__(puzzle):
     to a set must be hashable (immutable). Tuples are hashable, so this function returns
     a tuple of tuples, which is hashable and can be added to the set"""
 
-def __path_trace__(node, visited):  # store the path from the root node to the goal node
-    current = node  # store input node as current
+def __path_trace__(current, visited):  # store the path from the root node to the goal node
     path = []  # initialize path list
     path.append(current)  # add current to path
-    if __puzzle_to_tuple__(current) in visited:  # while the parent of the current node is not None
-        current = visited[__puzzle_to_tuple__(current)]  # set current to the parent of the current node
-        path.append(current)  # add current to path
+    while current is not None:
+        if __puzzle_to_tuple__(current) in visited:  # while the parent of the current node is not None
+            current = visited[__puzzle_to_tuple__(current)]  # set current to the parent of the current node
+            path.append(current)  # add current to path
     return path  # return the path to the goal state
 
 def bfs(root):
@@ -27,7 +27,7 @@ def bfs(root):
         print(f"Searching node: {current_node}")
 
         if goal_test(current_node) == True: #if we have reached the goal state
-            path_to_solution = __path_trace__(current_node) #return the path to the goal state
+            path_to_solution = __path_trace__(current_node, visited) #return the path to the goal state
             return path_to_solution
 
         children = generate_moves(current_node) #generate valid states/moves from current state
