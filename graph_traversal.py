@@ -1,5 +1,10 @@
 def goal_test(state, goal=None): #have we solved the puzzle?
-    return None
+    if goal is None:
+        x = max(max(state))
+        y = [x for x in range(max(max(state)), 0, -1)]
+        goal = [[]] * (len(state) - 1)
+        goal.append(y)
+    return state == goal
 
 def generate_moves(state):
     children = []
