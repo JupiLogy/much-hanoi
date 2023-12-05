@@ -1,13 +1,12 @@
+from utils.state_properties import *
+
 def make_state(state):
     while True:
         print("STATE CONFIGURATION")
         print("Would you like to start with a custom state,")
         print("begin from a random state,")
         print("start with a random \"Super\" state,")
-        print("or start from the default start state?")
-        print("c = Custom state")
-        print("d = Default state")
-        print("m = Menu")
+        print("or start from a default start state?")
         choice = input("(c)ustom/(d)efault/(m)enu: ")
         if choice == "c":
             return make_custom_state(state)
@@ -67,6 +66,7 @@ def init_state_from_params(pegs, discs, state):
     return state
 
 def make_custom_state(state):
+    import ast
     print("State guidelines:")
     print("1. There must not be duplicate discs. No two discs can be the same size.")
     print("2. The smallest disc must be \"1\". Each disc after that must increase")
@@ -76,7 +76,7 @@ def make_custom_state(state):
     print("There are 3 pegs and 5 discs.")
     print("The discs are in order.")
     while True:
-        new_state = input("Your state: ")
+        new_state = ast.literal_eval(input("Your state: "))
         if validate_state(new_state, godmode=True):
             print("State validated!")
             print(new_state)
