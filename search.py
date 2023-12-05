@@ -37,3 +37,6 @@ def bfs(root):
             if child_puzzle_tuple not in visited:
                 open_list.append(current_child)
                 visited[child_puzzle_tuple] = __puzzle_to_tuple__(current_node)
+
+def generate_graph(state):
+    print("Not yet implemented")

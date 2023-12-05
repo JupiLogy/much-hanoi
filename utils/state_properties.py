@@ -1,5 +1,3 @@
-
-
 def num_pegs(state):
     return(len(state))
 
